@@ -25,4 +25,5 @@ Thumbs.db
 
 #Дополнения к стандартному файлу Laravel
 run.sh
+ch.sh
 /config/*.local.php
