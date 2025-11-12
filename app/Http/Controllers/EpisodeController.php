@@ -2,37 +2,66 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Responses\BaseResponce;
+use App\Http\Responses\FailResponce;
+use App\Http\Responses\SuccessResponse;
 use Illuminate\Http\Request;
+use Exception;
 
 class EpisodeController extends Controller
 {
   // Получение списка эпизодов сериала
-  public function index($showId)
+  public function index($showId): BaseResponce
   {
-    return response()->json();
+    try {
+      $data = []; // получаем список эпизодов сериала
+      return new SuccessResponse($data);
+    } catch (Exception $e) {
+      return new FailResponce([], $e->getMessage());
+    }
   }
 
   // Получение информации об эпизоде $id
-  public function show($id)
+  public function show($id): BaseResponce
   {
-    return response()->json();
+    try {
+      $data = []; // получаем информацию об эпизоде
+      return new SuccessResponse($data);
+    } catch (Exception $e) {
+      return new FailResponce([], $e->getMessage());
+    }
   }
 
   // Добавление эпизода $id в список просмотренных
-  public function markAsWatched($id)
+  public function markAsWatched($id): BaseResponce
   {
-    return response()->json();
+    try {
+      $data = []; // добавляем эпизод в список просмотренных
+      return new SuccessResponse($data);
+    } catch (Exception $e) {
+      return new FailResponce([], $e->getMessage());
+    }
   }
 
   // Удаление эпизода $id из списка просмотренных
-  public function removeFromWatched($id)
+  public function removeFromWatched($id): BaseResponce
   {
-    return response()->json();
+    try {
+      $data = []; // удаляем эпизод из списка просмотренных
+      return new SuccessResponse($data);
+    } catch (Exception $e) {
+      return new FailResponce([], $e->getMessage());
+    }
   }
 
   // Получение списка не просмотренных эпизодов для сериала $showId
-  public function getUnwatchedEpisodes($showId)
+  public function getUnwatchedEpisodes($showId): BaseResponce
   {
-    return response()->json();
+    try {
+      $data = []; // получаем список не просмотренных эпизодов
+      return new SuccessResponse($data);
+    } catch (Exception $e) {
+      return new FailResponce([], $e->getMessage());
+    }
   }
 }
