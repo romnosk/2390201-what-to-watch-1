@@ -2,26 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Responses\BaseResponce;
+use App\Http\Responses\FailResponce;
+use App\Http\Responses\SuccessResponse;
 use Illuminate\Http\Request;
+use Exception;
 
 class AuthController extends Controller
 {
   // Регистрация пользователя
-  public function register(Request $request)
+  public function register(Request $request): BaseResponce
   {
-    return response()->json();
+    try {
+      $data = []; // регистрируем пользователя
+      return new SuccessResponse($data);
+    } catch (Exception $e) {
+      return new FailResponce([], $e->getMessage());
+    }
   }
 
   // Аутентификация пользователя
-  public function login(Request $request)
+  public function login(Request $request): BaseResponce
   {
-    return response()->json();
+    try {
+      $data = []; // аутентифицируем пользователя
+      return new SuccessResponse($data);
+    } catch (Exception $e) {
+      return new FailResponce([], $e->getMessage());
+    }
   }
 
   // Выход пользователя
-  public function logout(Request $request)
+  public function logout(Request $request): BaseResponce
   {
-    // Пустой ответ для выхода
-    return response()->json();
+    try {
+      // пустой ответ для выхода
+      return new SuccessResponse([]);
+    } catch (Exception $e) {
+      return new FailResponce([], $e->getMessage());
+    }
   }
 }
