@@ -6,43 +6,96 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * Модель пользователя
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property mixed $password
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $avatar
+ */
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+  use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
+  /**
+   * Имя таблицы в базе данных.
+   *
+   * @var string
+   */
+  protected $table = 'users';
+
+  /**
+   * Атрибуты, которые можно массово заполнять.
+   *
+   * @var array<int, string>
+   */
+  protected $fillable = [
+    'name',
+    'email',
+    'password',
+    'avatar',
+  ];
+
+  /**
+   * Атрибуты, которые должны быть скрыты при сериализации.
+   *
+   * @var array<int, string>
+   */
+  protected $hidden = [
+    'password',
+    'remember_token',
+  ];
+
+  /**
+   * Атрибуты, которые должны быть приведены к типам.
+   *
+    * @return array<string, string>
+    */
+  protected function casts(): array
+  {
+    return [
+      'email_verified_at' => 'datetime',
+      'password' => 'hashed',
     ];
+  }
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+  /**
+   * Получить комментарии пользователя.
+   */
+  public function comments()
+  {
+    return $this->hasMany(Comment::class);
+  }
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+  /**
+   * Получить оценки сериалов пользователем
+   */
+  public function serialVotes()
+  {
+    return $this->hasMany(SerialVote::class);
+  }
+
+  /**
+   * Получить сериалы, которые посмотрел пользователь.
+   */
+  public function watchedSerials()
+  {
+    return $this->belongsToMany(Serial::class, 'serials_watched');
+  }
+
+  /**
+   * Получить эпизоды, которые посмотрел пользователь.
+   */
+  public function watchedEpisodes()
+  {
+    return $this->belongsToMany(Episode::class, 'episodes_watched');
+  }
 }
